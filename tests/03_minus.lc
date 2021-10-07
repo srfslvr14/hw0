@@ -29,11 +29,11 @@ let SND   = \p     -> p FALSE
 -- do not modify text BEFORE this line
 --------------------------------------------------------------------------------
 
-let SKIP1 = \f p -> PAIR TRUE (ITE (FST p) (f (SND p)) (SND p))  -- skips the increment command if the tuple's FST is false
-let DECR  = \n -> SND(n (SKIP1 INCR) (PAIR FALSE ZERO))          -- decrement n by one
-let SUB   = \n m -> m DECR n                                     -- dubtract m from n; aka n - m
-let ISZ   = \n -> n (\f -> FALSE) (TRUE)                         -- is n equal to zero? return true or false
-let EQL   = \n m -> ISZ (SUB m n)                                -- subtract n from m and see if its zero, if so, theyre equal
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p) (f (SND p)) (SND p)) -- skips the increment command if the tuple's FST is false
+let DECR  = \n -> SND(n (SKIP1 INCR) (PAIR FALSE ZERO))         -- decrement n by one
+let SUB   = \n m -> m DECR n                                    -- dubtract m from n; aka n - m
+let ISZ   = \n -> n (\f -> FALSE) (TRUE)                        -- is n equal to zero? return true or false
+let EQL   = \n m -> AND (ISZ (SUB m n)) ((ISZ (SUB n m)))       -- subtract n from m and see if its zero, if so, theyre equal
 
 --------------------------------------------------------------------------------
 -- do not modify text AFTER this line
