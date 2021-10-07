@@ -29,11 +29,11 @@ let SND   = \p     -> p FALSE
 -- do not modify text BEFORE this line
 --------------------------------------------------------------------------------
 
-let SKIP1 = undefined       -- (a)
-let DECR  = undefined       -- (b)
-let SUB   = undefined       -- (c)
-let ISZ   = undefined       -- (d)
-let EQL   = undefined       -- (e)
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p) (f (SND p)) (SND p))  -- skips the increment command if the tuple's FST is false
+let DECR  = \n -> SND(n (SKIP1 INCR) (PAIR FALSE ZERO))          -- decrement n by one
+let SUB   = \n m -> m DECR n                                     -- dubtract m from n; aka n - m
+let ISZ   = \n -> n (\f -> FALSE) (TRUE)                         -- is n equal to zero? return true or false
+let EQL   = \n m -> ISZ (SUB m n)                                -- (e)
 
 --------------------------------------------------------------------------------
 -- do not modify text AFTER this line
@@ -43,7 +43,7 @@ let EQL   = undefined       -- (e)
 
 eval skip1_false :
   SKIP1 INCR (PAIR FALSE ZERO)
-  =~> (\b -> b TRUE ZERO)         --  PAIR TRUE ZERO
+  =~> (\b -> b TRUE ZERO)         -- PAIR TRUE ZERO
 
 eval skip1_true_zero :
   SKIP1 INCR (PAIR TRUE ZERO)
